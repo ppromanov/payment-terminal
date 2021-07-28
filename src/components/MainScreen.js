@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import CellProvider from './CellProvider';
 
-const MainScreen = ({ providersList, selector }) => {
+const MainScreen = ({ providersList, selectProvider }) => {
   return (
     <Fragment>
       <div className="prov-selector">
@@ -9,7 +9,8 @@ const MainScreen = ({ providersList, selector }) => {
           <CellProvider
             key={id}
             provider={provider}
-            onClick={(e) => selector(id)}
+            id={id}
+            selectProvider={selectProvider}
           />
         ))}
       </div>

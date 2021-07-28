@@ -16,14 +16,13 @@ const App = () => {
   const [cellProvider, setCellProvider] = useState(null);
 
   const selectProvider = (id) => {
-    setCellProvider(id);
-    console.log('pop');
+    id !== null ? setCellProvider(providersList[id]) : setCellProvider(null);
   };
 
   return cellProvider !== null ? (
-    <Terminal cellProvider={cellProvider} />
+    <Terminal cellProvider={cellProvider} selectProvider={selectProvider} />
   ) : (
-    <MainScreen providersList={providersList} selector={selectProvider} />
+    <MainScreen providersList={providersList} selectProvider={selectProvider} />
   );
 };
 export default App;
