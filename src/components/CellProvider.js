@@ -4,7 +4,7 @@ const CellProvider = ({ provider: { title, logo }, id, selectProvider }) => (
   <img
     src={logo}
     alt={title}
-    className={title}
+    className={title + ' cell-selector'}
     onClick={() => selectProvider(id)}
   />
 );

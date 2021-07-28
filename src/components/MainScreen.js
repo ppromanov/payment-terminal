@@ -15,7 +15,7 @@ const MainScreen = ({ providersList, selectProvider }) => {
         ))}
       </div>
       <center>
-        <h2>Выберите провайдера, для пополенения счета</h2>
+        <h2>Выберите провайдера, для пополнения счета</h2>
       </center>
     </Fragment>
   );

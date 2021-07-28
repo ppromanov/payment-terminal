@@ -10,7 +10,10 @@
   align-items: center;
   margin-top: 12%;
 }
-
+.terminal {
+  margin: 0 25%;
+  padding: 150px;
+}
 .beeline {
   border-radius: 50%;
 }
@@ -20,11 +23,46 @@
 .megafon {
   border-radius: 50%;
 }
+input {
+  width: 100%;
+  font-size: 20px;
+  border-radius: 10px;
+}
+.terminal-logo {
+  width: 300px;
+  margin-left: 27%;
+}
 
-img {
+.cell-selector {
   width: 300px;
   border: 2px solid transparent;
 }
-img:hover {
-  border-color: black;
+img.beeline:hover {
+  border-color: yellow;
+}
+img.megafon:hover {
+  border-color: green;
+}
+img.MTS:hover {
+  border-color: red;
+}
+.error {
+  padding: 5px;
+  margin: 5px auto;
+  color: white;
+  border: 1px solid darkred;
+  border-radius: 10px;
+  background-color: red;
+}
+p {
+  padding: -10px;
+}
+.inputs {
+  margin: auto;
+  width: 75%;
+}
+.buttons {
+  padding: 5px;
+  display: flex;
+  justify-content: space-between;
 }
