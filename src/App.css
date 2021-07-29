@@ -92,7 +92,6 @@ img.MTS:hover {
   text-align: center;
   min-width: 67vh;
   padding: 5px;
-  margin: 5px auto;
   color: white;
   border: 1px solid darkred;
   border-radius: 10px;
@@ -104,7 +103,7 @@ img.MTS:hover {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 11.5vh;
-  margin-top: 5vh;
+  margin-top: 1vh;
 }
 button {
   font-size: 20px;
