@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import CellProvider from './CellProvider';
 import providersList from '../cellProviders/cellProviders';
 
