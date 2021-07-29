@@ -1,28 +1,35 @@
 import React, { useState } from 'react';
 import './App.css';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
 import MainScreen from './components/MainScreen';
 import Terminal from './components/Terminal';
-import beelineLogo from './images/beelineLogo.png';
-import mtsLogo from './images/MTSlogo.png';
-import megafonLogo from './images/megafonLogo.png';
+import Context from './context/context';
+import providersList from './cellProviders/cellProviders';
 
 const App = () => {
-  const providersList = [
-    { title: 'beeline', logo: beelineLogo },
-    { title: 'MTS', logo: mtsLogo },
-    { title: 'megafon', logo: megafonLogo },
-  ];
+  const [cellProvider, setCellProvider] = useState({ title: 'main' });
 
-  const [cellProvider, setCellProvider] = useState(null);
-
-  const selectProvider = (id) => {
-    id !== null ? setCellProvider(providersList[id]) : setCellProvider(null);
-  };
-
-  return cellProvider !== null ? (
-    <Terminal cellProvider={cellProvider} selectProvider={selectProvider} />
-  ) : (
-    <MainScreen providersList={providersList} selectProvider={selectProvider} />
+  async function selectProvider(id) {
+    id === null
+      ? setCellProvider({ title: 'main' })
+      : setCellProvider(providersList[id]);
+  }
+  return (
+    <>
+    <Context.Provider value={{ selectProvider, cellProvider }}>
+      <Router>
+        <Switch>
+          <Route exact path="/" component={MainScreen} />
+          <Route
+            exact
+            path={`/terminal/${cellProvider.title}`}
+            component={Terminal}
+          />
+        </Switch>
+      </Router>
+    </Context.Provider>
+    </>
   );
 };
 export default App;
