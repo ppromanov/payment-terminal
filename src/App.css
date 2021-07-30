@@ -18,11 +18,7 @@ form {
 p {
   padding: -10px;
 }
-input {
-  width: 67vh;
-  font-size: 20px;
-  border-radius: 5px;
-}
+
 .main-screen {
   margin-top: 25px;
   min-width: 190vh;
@@ -47,7 +43,8 @@ input {
   border-radius: 10px;
 }
 .beeline {
-  border-radius: 100px;
+  padding: 5px;
+  border-radius: 45%;
 }
 .MTS {
   width: 400px;
@@ -89,34 +86,16 @@ img.MTS:hover {
   border-color: red;
 }
 .error {
-  text-align: center;
+  margin-top: 1px;
+  text-align: end;
   min-width: 67vh;
-  padding: 5px;
-  color: white;
-  border: 1px solid darkred;
-  border-radius: 10px;
-  background-color: red;
+  color: red;
 }
 .buttons {
   width: 50vh;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 11.5vh;
+  margin-bottom: 5vh;
   margin-top: 1vh;
-}
-button {
-  font-size: 20px;
-  border: none;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  border-bottom: 1px solid black;
-  background-color: transparent;
-  transition: 0.1;
-}
-button:hover {
-  background-color: lightgray;
-}
-button:active {
-  background-color: gray;
 }

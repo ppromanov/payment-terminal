@@ -1,6 +1,6 @@
 import React from 'react';
 import CellProvider from './CellProvider';
-import providersList from '../cellProviders/cellProviders';
+import providersList from '../utils/cellProviders';
 
 const MainScreen = () => {
   return (

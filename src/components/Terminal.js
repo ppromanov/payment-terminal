@@ -1,59 +1,54 @@
-import React, { useContext, useState } from 'react';
-import { Formik, Field, Form } from 'formik';
-import MaskedInput from 'react-text-mask';
-import Context from '../context/context';
-import { Link, Redirect } from 'react-router-dom';
-import NumberFormat from 'react-number-format';
+import React, { useState } from 'react';
+import { useFormik } from 'formik';
+import { Link, Redirect, useParams } from 'react-router-dom';
+import {
+  Input,
+  TextField,
+  InputLabel,
+  Button,
+  FormControl,
+} from '@material-ui/core';
+import * as yup from 'yup';
+import providersList from '../utils/cellProviders';
+import { TextMaskCustom, NumberFormatCustom } from '../utils/masks';
 
-const phoneNumberMask = [
-  '8',
-  ' ',
-  '(',
-  /[1-9]/,
-  /\d/,
-  /\d/,
-  ')',
-  ' ',
-  /\d/,
-  /\d/,
-  /\d/,
-  '-',
-  /\d/,
-  /\d/,
-  /\d/,
-  /\d/,
-];
+const validation = yup.object().shape({
+  payment: yup
+    .number('Введите сумму')
+    .min(1, 'Минималная сумма платежа - 1 рубль')
+    .max(1000, 'Сумма должна быть менее 1000 рублей')
+    .required('Необходимо ввести сумму платежа'),
+  phone: yup
+    .string()
+    .test('len', (val) => val.replace(/[^0-9]/g, '').length === 10),
+});
 
 const Terminal = () => {
-  const { selectProvider, cellProvider } = useContext(Context);
+  const { cellProvider } = useParams();
 
-  const validatePhone = (value) => {
-    let error;
-    value = value.replace(/[^0-9]/g, '');
-    if (!value) {
-      error = 'Необходимо ввести номер телефона';
-    } else if (value.length < 11) {
-      error = 'В номере телефона не достаточно цифр';
-    }
-    return error;
-  };
-
-  const validatePayment = (value) => {
-    let error;
-    value = value.replace(/[^0-9]/g, '');
-    if (!value) {
-      error = 'Необходимо ввести сумму';
-    } else if (value > 1000 || value <= 0) {
-      error =
-        'Максимальная сумма пополнения - 1000 рублей, минимальная - 1 рубль';
-    }
-    return error;
-  };
+  const formik = useFormik({
+    initialValues: { phone: '9', payment: '1' },
+    validationSchema: validation,
+    onSubmit: (values) => {
+      const promise = new Promise((reslove) => {
+        const random = Math.random(0, 1);
+        setTimeout(() => {
+          if (random > 0.5) {
+            reslove(success(values));
+          } else {
+            alert(
+              'Что-то пошло не так, повторите попытку позже. Приносим свои извинения'
+            );
+          }
+        }, 1000);
+      });
+      return promise;
+    },
+  });
 
   const [back, setBack] = useState('');
 
   if (back === 'back') {
-    selectProvider(null);
     return <Redirect to="/" />;
   }
 
@@ -62,7 +57,7 @@ const Terminal = () => {
     alert(
       'Пополнение на сумму: ' +
         payment +
-        ' рублей, на номер ' +
+        ' рублей, на номер 8 ' +
         values.phone +
         ' проведенно успешно!'
     );
@@ -73,74 +68,52 @@ const Terminal = () => {
     <div className="terminal">
       <div className="logo">
         <img
-          src={cellProvider.logo}
-          alt={cellProvider.title}
-          className={cellProvider.title + ' terminal-logo'}
+          src={providersList.find((item) => item.title === cellProvider).logo}
+          alt={cellProvider}
+          className={cellProvider + ' terminal-logo'}
         />
       </div>
-      <Formik
-        initialValues={{ phone: '', payment: '' }}
-        onSubmit={(values) => {
-          const promise = new Promise((reslove, reject) => {
-            const random = Math.random(0, 1);
-            setTimeout(() => {
-              if (random > 0.5) {
-                reslove(success(values));
-              } else {
-                alert(
-                  'Что-то пошло не так, повторите попытку позже. Приносим свои извинения'
-                );
-              }
-            }, 1500);
-          });
-        }}
-      >
-        {({ errors, touched }) => (
-          <Form className="inputs">
-            <p>Введите номер телефона</p>
-            <Field
-              className="number"
-              validate={validatePhone}
+      <form onSubmit={formik.handleSubmit}>
+        <div className="inputs">
+          <FormControl>
+            <InputLabel htmlFor="formatted-text-mask-input">
+              Введите номер телефона без первой цифры
+            </InputLabel>
+            <Input
+              style={{ width: '50vh' }}
+              label="Введите номер телефона"
+              variant="outlined"
               name="phone"
-              render={({ field }) => (
-                <MaskedInput
-                  {...field}
-                  mask={phoneNumberMask}
-                  id="phone"
-                  type="text"
-                  placeholder="8 (___) ___-____"
-                />
-              )}
+              value={formik.values.phone}
+              onChange={formik.handleChange}
+              inputComponent={TextMaskCustom}
+              error={formik.touched.phone && Boolean(formik.errors.phone)}
             />
-            {errors.phone && touched.phone && (
-              <div className="error">{errors.phone}</div>
-            )}
-            <p>Введите сумму пополнения (максимум 1000 рублей)</p>
-            <Field
-              className="payment"
-              validate={validatePayment}
-              name="payment"
-              render={({ field }) => (
-                <NumberFormat
-                  {...field}
-                  placeholder="RUB:"
-                  thousandSeparator={true}
-                  prefix={'RUB: '}
-                />
-              )}
-            />
-            {errors.payment && touched.payment && (
-              <div className="error">{errors.payment}</div>
-            )}
-            <div className="buttons">
-              <button type="submit">Пополнить</button>
-              <Link to="/">
-                <button onClick={() => selectProvider(null)}>Назад</button>
-              </Link>
-            </div>
-          </Form>
-        )}
-      </Formik>
+          </FormControl>
+          <p />
+          <TextField
+            style={{ width: '50vh' }}
+            label="Введите сумму пополнения"
+            value={formik.values.payment}
+            onChange={formik.handleChange}
+            name="payment"
+            id="payment"
+            error={formik.touched.payment && Boolean(formik.errors.payment)}
+            helperText={formik.touched.payment && formik.errors.payment}
+            InputProps={{
+              inputComponent: NumberFormatCustom,
+            }}
+          />
+          <div className="buttons">
+            <Button variant="outlined" color="primary" type="submit">
+              Пополнить
+            </Button>
+            <Link to="/">
+              <Button variant="outlined">Назад</Button>
+            </Link>
+          </div>
+        </div>
+      </form>
     </div>
   );
 };
