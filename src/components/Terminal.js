@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useFormik } from 'formik';
-import { Link, Redirect, useParams } from 'react-router-dom';
+import { Link, useParams, useHistory } from 'react-router-dom';
 import {
   Input,
   TextField,
@@ -9,8 +9,8 @@ import {
   FormControl,
 } from '@material-ui/core';
 import * as yup from 'yup';
-import providersList from '../utils/cellProviders';
-import { TextMaskCustom, NumberFormatCustom } from '../utils/masks';
+import providersList from './cellProvidersList';
+import { TextMaskCustom, NumberFormatCustom } from './Masks';
 
 const validation = yup.object().shape({
   payment: yup
@@ -24,6 +24,7 @@ const validation = yup.object().shape({
 });
 
 const Terminal = () => {
+  const history = useHistory();
   const { cellProvider } = useParams();
 
   const formik = useFormik({
@@ -46,12 +47,6 @@ const Terminal = () => {
     },
   });
 
-  const [back, setBack] = useState('');
-
-  if (back === 'back') {
-    return <Redirect to="/" />;
-  }
-
   function success(values) {
     const payment = values.payment.replace(/[A-Z:]/g, '');
     alert(
@@ -61,7 +56,7 @@ const Terminal = () => {
         values.phone +
         ' проведенно успешно!'
     );
-    setBack('back');
+    history.push('/');
   }
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
@@ -7,14 +7,12 @@ import Terminal from './components/Terminal';
 
 const App = () => {
   return (
-    <>
-      <Router>
-        <Switch>
-          <Route exact path="/" component={MainScreen} />
-          <Route exact path={`/terminal/:cellProvider`} component={Terminal} />
-        </Switch>
-      </Router>
-    </>
+    <Router>
+      <Switch>
+        <Route exact path="/" component={MainScreen} />
+        <Route exact path="/terminal/:cellProvider" component={Terminal} />
+      </Switch>
+    </Router>
   );
 };
 export default App;
